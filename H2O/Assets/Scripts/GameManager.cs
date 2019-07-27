@@ -14,9 +14,12 @@ public class GameManager : MonoBehaviour
     public int healthPoints = 50;
     public Slider waterPointsSlider;
     public Slider energyPointsSlider;
+    public Slider goodWaterPointsSlider;
     public float energyTime;
     public Bucket player;
     public Animator gameOverAnimation;
+    public int goodWaterPoints;
+    public int goodWater;
 
     private float timer;
     private GameObject spawnedObjects;
@@ -40,6 +43,7 @@ public class GameManager : MonoBehaviour
     {
         waterPointsSlider.value = waterPoints;
         energyPointsSlider.value = healthPoints;
+        goodWaterPointsSlider.value = goodWaterPoints;
 
         waterPoints = Mathf.Min(waterPoints, 100);
         healthPoints = Mathf.Min(healthPoints, 100);
@@ -56,16 +60,21 @@ public class GameManager : MonoBehaviour
         timer += Time.deltaTime;
 
         player.velocity = (healthPoints * 0.0008f) + 0.02f;
+        
+        if(timer > 10f)
+        {
+            timer = 0f;
+            repeatRate += 0.05f;
+        }
+        Mathf.Clamp(repeatRate, 1.5f, 3f);
 
-        repeatRate -= Time.deltaTime / 2f;
-        Mathf.Clamp(repeatRate, 1.5f, 0.75f);
     }
 
     private void SpawnWater()
     {
-        float i = Random.Range(0f, 10f);
+        float i = Random.Range(0, 10);
 
-        if (i < 6.5f)
+        if (i < 6)
             InstantiatePureWater();
         else
             InstantiatePollutedWater();

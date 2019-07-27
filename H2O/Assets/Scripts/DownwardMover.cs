@@ -19,15 +19,17 @@ public class DownwardMover : MonoBehaviour
         if (!falling)
             return;
 
-        if(this.gameObject.tag == "Pure Water")
+        gameManager.waterPoints += 10;
+
+        if(this.gameObject.tag == "Polluted Water")
         {
-            gameManager.waterPoints += 10;
+            gameManager.healthPoints -= 5;
         }
-        else if (this.gameObject.tag == "Polluted Water")
+        else
         {
-            gameManager.healthPoints -= 2;
+            gameManager.goodWater += 10;
         }
-       
+
         Destroy(this.gameObject);
     }
 
