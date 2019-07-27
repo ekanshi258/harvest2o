@@ -25,11 +25,7 @@ public class DownwardMover : MonoBehaviour
         }
         else if (this.gameObject.tag == "Polluted Water")
         {
-            gameManager.waterPoints -= 2;
-        }
-        else
-        {
-            gameManager.waterPoints -= 5;
+            gameManager.healthPoints -= 2;
         }
        
         Destroy(this.gameObject);

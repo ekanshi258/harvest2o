@@ -34,16 +34,6 @@ public class Bucket : MonoBehaviour
                                                 Mathf.Clamp(this.transform.position.x, boundaryLimits.xMinimum, boundaryLimits.xMaximum),
                                                 this.transform.position.y
                                               );
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(coroutine);
-        }
-
-        if(Input.GetKeyUp(KeyCode.Space))
-        {
-            StopCoroutine(coroutine);
-        }
     }
 
     private void FixedUpdate()
@@ -77,7 +67,7 @@ public class Bucket : MonoBehaviour
             if (gameManager.waterPoints >= 10)
             {
                 gameManager.waterPoints -= 10;
-                gameManager.energyPoints += 5;
+                gameManager.healthPoints += 5;
                 yield return new WaitForSeconds(0.75f);
             }
             else
