@@ -13,15 +13,17 @@ public class Bucket : MonoBehaviour
 
     public BoundaryLimits boundaryLimits;
     public float velocity;
+    public Animator textWarning;
 
     private GameManager gameManager;
-    private IEnumerator coroutine;
     private Vector3 position;
+    private bool inRange = false;
+    private static int touch;
+    private float maxTime = 1f;
 
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        coroutine = FlushWater();
         
         float halfHeight = (boundaryLimits.yMaximum - boundaryLimits.yMinimum) / 2.0f;
         boundaryLimits.xMaximum = (halfHeight * Screen.width / Screen.height) - 0.5f;
@@ -48,30 +50,48 @@ public class Bucket : MonoBehaviour
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             {
                 position = Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0f));
-                float moveRight = 0f;
+                if ((position - this.transform.position).magnitude > 0.1f)
+                {
+                    float moveRight = 0f;
 
-                if (position.x > this.transform.position.x)
-                    moveRight = 1f;
-                else if (position.x < this.transform.position.x)
-                    moveRight = -1f;
+                    if (position.x > this.transform.position.x)
+                    {
+                        moveRight = 1f;
+                        this.GetComponent<SpriteRenderer>().flipX = false;
+                    }
+                    else if (position.x < this.transform.position.x)
+                    {
+                        moveRight = -1f;
+                        this.GetComponent<SpriteRenderer>().flipX = true;
+                    }
 
-                this.transform.Translate(Vector3.right * moveRight * velocity);
+                    this.transform.Translate(Vector3.right * moveRight * velocity);
+                }
             }
         }
     }
 
-    private IEnumerator FlushWater()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        while(true)
+        inRange = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        inRange = false;
+    }
+
+    public void FlushWater()
+    {
+        if (inRange)
         {
-            if (gameManager.waterPoints >= 10)
-            {
-                gameManager.waterPoints -= 10;
-                gameManager.healthPoints += 5;
-                yield return new WaitForSeconds(0.75f);
-            }
-            else
-                break;
+            gameManager.goodWaterPoints = gameManager.goodWater;
+            gameManager.Status();
+            gameManager.waterPoints = 0;
+        }
+        else
+        {
+            textWarning.SetTrigger("Warning");
         }
     }
 }

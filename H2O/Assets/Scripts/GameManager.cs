@@ -20,10 +20,15 @@ public class GameManager : MonoBehaviour
     public Animator gameOverAnimation;
     public int goodWaterPoints;
     public int goodWater;
+    public Animator person;
+    public Animator water;
+    public Sprite[] backgrounds;
+    public SpriteRenderer backgroundImage;
 
     private float timer;
     private GameObject spawnedObjects;
     private float minimumXSpawnCoordinate, maximumXSpawnCoordinate;
+    private int backgroundNumber = 1;
 
     private void Start()
     {
@@ -64,9 +69,9 @@ public class GameManager : MonoBehaviour
         if(timer > 10f)
         {
             timer = 0f;
-            repeatRate += 0.05f;
+            repeatRate -= 0.05f;
         }
-        Mathf.Clamp(repeatRate, 1.5f, 3f);
+        Mathf.Clamp(repeatRate, 1.5f, 0.5f);
 
     }
 
@@ -90,5 +95,17 @@ public class GameManager : MonoBehaviour
     {
         Vector3 spawnPosition = new Vector3(Random.Range(minimumXSpawnCoordinate, maximumXSpawnCoordinate), ySpawnCoordinate, 0f);
         Instantiate(pollutedWater, spawnPosition, Quaternion.identity, spawnedObjects.transform);
+    }
+
+    public void Status()
+    {
+        if (goodWaterPoints >= goodWaterPointsSlider.maxValue)
+        {
+            goodWaterPoints = 0;
+            backgroundImage.sprite = backgrounds[backgroundNumber];
+            backgroundNumber++;
+            person.SetTrigger("Donate");
+            water.SetTrigger("Start");
+        }
     }
 }

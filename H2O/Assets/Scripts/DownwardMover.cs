@@ -4,6 +4,9 @@ public class DownwardMover : MonoBehaviour
 {
     public float velocity;
     [HideInInspector] public bool falling = true;
+    public AudioSource audioSource;
+    public AudioClip pureWaterAudio;
+    public AudioClip pollutedWaterAudio;
 
     private GameManager gameManager;
 
@@ -16,21 +19,28 @@ public class DownwardMover : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!falling)
-            return;
-
-        gameManager.waterPoints += 10;
-
-        if(this.gameObject.tag == "Polluted Water")
+        if (collision.gameObject.tag == "Bucket")
         {
-            gameManager.healthPoints -= 5;
-        }
-        else
-        {
-            gameManager.goodWater += 10;
-        }
+            if (!falling)
+                return;
 
-        Destroy(this.gameObject);
+            gameManager.waterPoints += 10;
+
+            if (this.gameObject.tag == "Polluted Water")
+            {
+                gameManager.healthPoints -= 5;
+                audioSource.clip = pollutedWaterAudio;
+                audioSource.Play();
+            }
+            else
+            {
+                gameManager.goodWater += 10;
+                audioSource.clip = pureWaterAudio;
+                audioSource.Play();
+            }
+
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
