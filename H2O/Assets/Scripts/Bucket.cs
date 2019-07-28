@@ -40,35 +40,42 @@ public class Bucket : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor)
+        /*if (Application.platform == RuntimePlatform.WindowsEditor)
         {
             float moveRight = Input.GetAxis("Horizontal");
             this.transform.Translate(Vector3.right * moveRight * velocity);
         }
         else
+        {*/
+        /*if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+            position = Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0f));
+            if ((position - this.transform.position).magnitude > 2.5f)
             {
-                position = Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0f));
-                if ((position - this.transform.position).magnitude > 0.1f)
+                float moveRight = 0f;
+
+                if (position.x > this.transform.position.x)
                 {
-                    float moveRight = 0f;
-
-                    if (position.x > this.transform.position.x)
-                    {
-                        moveRight = 1f;
-                        this.GetComponent<SpriteRenderer>().flipX = false;
-                    }
-                    else if (position.x < this.transform.position.x)
-                    {
-                        moveRight = -1f;
-                        this.GetComponent<SpriteRenderer>().flipX = true;
-                    }
-
-                    this.transform.Translate(Vector3.right * moveRight * velocity);
+                    moveRight = 1f;
+                    this.GetComponent<SpriteRenderer>().flipX = false;
                 }
+                else if (position.x < this.transform.position.x)
+                {
+                    moveRight = -1f;
+                    this.GetComponent<SpriteRenderer>().flipX = true;
+                }
+
+                this.transform.Translate(Vector3.right * moveRight * velocity);
             }
-        }
+        }*/
+        if(Input.acceleration.x >= 0.1)
+            this.GetComponent<SpriteRenderer>().flipX = false;
+        else
+            this.GetComponent<SpriteRenderer>().flipX = true;
+
+        this.transform.Translate(Input.acceleration.x / 2.5f, 0f, 0f);
+
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -85,9 +92,10 @@ public class Bucket : MonoBehaviour
     {
         if (inRange)
         {
-            gameManager.goodWaterPoints = gameManager.goodWater;
+            gameManager.goodWaterPoints += gameManager.goodWater;
             gameManager.Status();
             gameManager.waterPoints = 0;
+            gameManager.goodWater = 0;
         }
         else
         {

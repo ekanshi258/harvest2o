@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2617383090854164071}
   - component: {fileID: 2617383090854164090}
   - component: {fileID: 2617383090854164069}
-  - component: {fileID: 9023297879972682216}
   - component: {fileID: 2617383090854164091}
+  - component: {fileID: 1302501606}
   m_Layer: 0
   m_Name: Polluted Water
   m_TagString: Polluted Water
@@ -130,25 +130,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.23, y: 2.94}
   m_EdgeRadius: 0
---- !u!95 &9023297879972682216
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2617383090854164070}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d00e701570426f04299210c345494ac3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &2617383090854164091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +144,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: -5
   falling: 1
-  audioSource: {fileID: 0}
   pureWaterAudio: {fileID: 8300000, guid: b68fb516aee5f6e4f82617680557279e, type: 3}
   pollutedWaterAudio: {fileID: 8300000, guid: 06db691ae294c7d4a9ceaa7940622f47, type: 3}
+  audioSource: {fileID: 0}
+--- !u!95 &1302501606
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2617383090854164070}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 85364785bd9c59e46b0b5e4b7707b307, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

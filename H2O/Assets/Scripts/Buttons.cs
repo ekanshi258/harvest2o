@@ -13,4 +13,12 @@ public class Buttons : MonoBehaviour
     {
         Application.Quit();
     }
+    public void pauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+    public void resumeGame()
+    {
+        Time.timeScale = 1f;
+    }
 }

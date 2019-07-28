@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,6 +25,11 @@ public class GameManager : MonoBehaviour
     public Animator water;
     public Sprite[] backgrounds;
     public SpriteRenderer backgroundImage;
+    public AudioClip gameOverAudio;
+    public TextMeshProUGUI savedNumber;
+    public Image fillColour;
+    public Color yellow;
+    public Color red;
 
     private float timer;
     private GameObject spawnedObjects;
@@ -52,6 +58,7 @@ public class GameManager : MonoBehaviour
 
         waterPoints = Mathf.Min(waterPoints, 100);
         healthPoints = Mathf.Min(healthPoints, 100);
+        goodWater = Mathf.Min(goodWater, 100);
 
         if(waterPoints < 0)
         {
@@ -59,18 +66,23 @@ public class GameManager : MonoBehaviour
         }
         if (healthPoints <= 0)
         {
+            Destroy(GameObject.FindGameObjectWithTag("Bucket"), 0.5f);
+            this.GetComponent<AudioSource>().clip = gameOverAudio;
+            this.GetComponent<AudioSource>().loop = false;
+            savedNumber.text = "You helped " + backgroundNumber.ToString() + " people with water.";
             gameOverAnimation.SetTrigger("Game Over");
         }
 
         timer += Time.deltaTime;
 
-        player.velocity = (healthPoints * 0.0008f) + 0.02f;
+        //player.velocity = (healthPoints * 0.0008f) + 0.02f;
         
-        if(timer > 10f)
+        if(timer > 5f)
         {
             timer = 0f;
-            repeatRate -= 0.05f;
+            repeatRate -= 0.1f;
         }
+        Debug.Log(repeatRate);
         Mathf.Clamp(repeatRate, 1.5f, 0.5f);
 
     }
@@ -102,10 +114,23 @@ public class GameManager : MonoBehaviour
         if (goodWaterPoints >= goodWaterPointsSlider.maxValue)
         {
             goodWaterPoints = 0;
+            goodWater = 0;
             backgroundImage.sprite = backgrounds[backgroundNumber];
             backgroundNumber++;
             person.SetTrigger("Donate");
             water.SetTrigger("Start");
+        }
+    }
+
+    public void ChangeColour()
+    {
+        if(healthPoints < 70 && healthPoints > 30)
+        {
+            fillColour.color = yellow;
+        }
+        else if(healthPoints < 30)
+        {
+            fillColour.color = red;
         }
     }
 }
